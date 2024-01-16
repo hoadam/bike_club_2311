@@ -24,4 +24,15 @@ class BikeClub
       biker.acceptable_terrain.include?(ride.terrain) && ride.total_distance <= biker.max_distance
     end
   end
+
+  def record_group_ride(ride)
+    start_time = Time.now
+    ride_data = { ride: ride, members: biker_eligible(ride), start_time: start_time }
+
+    ride_data[:members].each do |biker|
+      finish_time = Time.now
+      ride_time = ((finish_time - start_time)/60).to_i
+      biker.log_ride(ride_data[:ride],ride_time)
+    end
+  end
 end

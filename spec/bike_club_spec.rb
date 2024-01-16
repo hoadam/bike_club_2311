@@ -73,8 +73,14 @@ RSpec.describe BikeClub do
       club.add_biker(biker_2)
       biker_1.learn_terrain!(:gravel)
       biker_2.learn_terrain!(:gravel)
+      start_time = Time.new(2024,1,16,8,0,0)
+      allow(Time).to receive(:now).and_return(start_time)
+      finish_time_biker2 = allow(Time).to receive(:now).and_return(start_time + 95.minutes)
+      finish_time_biker1 = allow(Time).to receive(:now).and_return(start_time + 90.minutes)
+      club.record_group_ride(ride_2)
 
-      allow(Time).to receive(:now).and_return(Time.new(2024,1,16,8,0,0))
+      expect(biker_1.rides[ride_2]).to eq(90)
+      expect(biker_2.rides[ride_2]).to eq(95)
     end
   end
 end
